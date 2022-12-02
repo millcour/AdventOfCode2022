@@ -10,24 +10,16 @@
       "name": "Run last day",
       "program": "${workspaceFolder}/src/index.ts",
       "preLaunchTask": "tsc: build - tsconfig.json",
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js"
-      ]
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
     },
     {
       "name": "Current TS File",
       "type": "node",
       "request": "launch",
-      "args": [
-        "${relativeFile}"
-      ],
-      "runtimeArgs": [
-        "--nolazy",
-        "-r",
-        "ts-node/register"
-      ],
+      "args": ["${relativeFile}"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
       "sourceMaps": true,
-      "cwd": "${workspaceRoot}",
+      "cwd": "${workspaceRoot}"
     }
   ]
 }

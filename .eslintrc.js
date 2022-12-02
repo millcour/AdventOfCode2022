@@ -1,18 +1,19 @@
-
 module.exports = {
   env: {
-    browser: true,
-    es2021: true
+    es2021: true,
+    node: true,
   },
-  extends: 'standard-with-typescript',
-  overrides: [
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
   ],
+  overrides: [],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: 'tsconfig.json'
   },
-  rules: {
-    'newline-per-chained-call': ['error', { ignoreChainWithDepth: 2 }]
-  }
-}
+  plugins: ['@typescript-eslint'],
+  rules: {},
+};
