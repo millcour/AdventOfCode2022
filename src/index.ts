@@ -11,7 +11,7 @@ async function main (): Promise<void> {
   console.log(`running: day ${dayNumber}`)
 
   const input = await fs.readFile('./inputs/' + last, { encoding: 'utf-8' })
-  const DayType = (await import(`./day${dayNumber}`)).default
+  const DayType = (await import(`./days/day${dayNumber}`)).default
   const day = new DayType(input)
   assert(day)
   console.log('running part 1')

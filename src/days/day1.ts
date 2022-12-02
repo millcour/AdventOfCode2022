@@ -1,4 +1,4 @@
-import { Day } from './day'
+import { Day } from '../day'
 
 export class Day1 extends Day<number, number, number[]> {
   parse (input: string): number[] {
