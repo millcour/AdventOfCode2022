@@ -1,6 +1,6 @@
-import { Day } from '../day'
+import { BaseDay } from '../day'
 
-export class Day1 extends Day<number, number, number[]> {
+export class Day extends BaseDay<number, number, number[]> {
   parse (input: string): number[] {
     const elves = input.split('\n\n')
     return elves.map((elf) =>
@@ -22,4 +22,4 @@ export class Day1 extends Day<number, number, number[]> {
   }
 }
 
-export default Day1
+export default Day

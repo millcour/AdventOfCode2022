@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from '@jest/globals'
-import { Day1 } from './day1'
+import { Day } from './day1'
 
 describe('day 1', () => {
   const example = `1000
@@ -17,10 +17,10 @@ describe('day 1', () => {
 
   10000`
 
-  let day: Day1
+  let day: Day
 
   beforeEach(() => {
-    day = new Day1(example)
+    day = new Day(example)
   })
   it('part 1', async () => {
     const output = await day.partOne()

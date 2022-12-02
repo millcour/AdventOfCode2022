@@ -1,4 +1,4 @@
-export abstract class Day<Return1, Return2, Input> {
+export abstract class BaseDay<Return1, Return2, Input> {
   input: Input
   constructor (input: string) {
     this.input = this.parse(input)
