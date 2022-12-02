@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "last": "ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
