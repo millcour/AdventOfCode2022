@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* istanbul ignore file */
+
 import { assert } from 'console';
 import * as fs from 'fs/promises';
 

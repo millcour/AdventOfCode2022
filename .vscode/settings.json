@@ -10,5 +10,6 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  },
+  "jest.jestCommandLine": "jest src/"
 }

@@ -1,14 +1,28 @@
 import { BaseDay } from '../day';
 
-enum Play {
+export enum Play {
   Rock = 1,
   Paper,
   Scissor,
 }
-enum Result {
+export enum Result {
   Loss = 0,
   Draw = 3,
   Win = 6,
+}
+
+export function result(me: Play, other: Play): Result {
+  if (me === other) {
+    return Result.Draw;
+  }
+  switch (me) {
+    case Play.Paper:
+      return other === Play.Rock ? Result.Win : Result.Loss;
+    case Play.Rock:
+      return other === Play.Scissor ? Result.Win : Result.Loss;
+    case Play.Scissor:
+      return other === Play.Paper ? Result.Win : Result.Loss;
+  }
 }
 
 export class Day extends BaseDay<number, number, string[][]> {
@@ -21,20 +35,6 @@ export class Day extends BaseDay<number, number, string[][]> {
   }
 
   async partOne(): Promise<number> {
-    function result(me: Play, other: Play): Result {
-      if (me === other) {
-        return Result.Draw;
-      }
-      switch (me) {
-        case Play.Paper:
-          return other === Play.Rock ? Result.Win : Result.Loss;
-        case Play.Rock:
-          return other === Play.Scissor ? Result.Win : Result.Loss;
-        case Play.Scissor:
-          return other === Play.Paper ? Result.Win : Result.Loss;
-      }
-    }
-
     function play(
       [other, me]: string[],
       mapping: Record<string, Play>
@@ -64,10 +64,6 @@ export class Day extends BaseDay<number, number, string[][]> {
 
   async partTwo(): Promise<number> {
     function play({ other, result }: { other: Play; result: Result }): Play {
-      if (result === Result.Draw) {
-        return other;
-      }
-
       const winMap: Record<Play, Play> = {
         [Play.Paper]: Play.Scissor,
         [Play.Rock]: Play.Paper,
@@ -79,13 +75,14 @@ export class Day extends BaseDay<number, number, string[][]> {
         [Play.Rock]: Play.Scissor,
       };
 
-      if (result === Result.Win) {
-        return winMap[other];
+      switch (result) {
+        case Result.Draw:
+          return other;
+        case Result.Win:
+          return winMap[other];
+        case Result.Loss:
+          return lossMap[other];
       }
-      if (result === Result.Loss) {
-        return lossMap[other];
-      }
-      throw new Error('invalid result');
     }
 
     const playMapping: Record<string, Play> = {

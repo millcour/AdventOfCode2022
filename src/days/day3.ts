@@ -56,11 +56,8 @@ export class Day extends BaseDay<number, number, string[]> {
 
       const common = [...first].find((char) => {
         return others.every((other) => other.indexOf(char) > -1);
-      });
+      }) as string;
 
-      if (!common) {
-        throw new Error('no item found!');
-      }
       return common;
     }
 

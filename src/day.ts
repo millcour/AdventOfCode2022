@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export abstract class BaseDay<Return1, Return2, Input> {
   input: Input;
   constructor(input: string) {

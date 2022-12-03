@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest",
+    "test": "jest src",
     "last": "ts-node src/index.ts",
     "eslint": "eslint --fix --cache .",
     "format": "npx prettier --write .",
