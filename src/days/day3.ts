@@ -13,7 +13,7 @@ function priority(c: string): number {
   }
 }
 
-export class Day extends BaseDay<number, number, string[]> {
+export class Day extends BaseDay<string[], number, number> {
   parse(input: string): string[] {
     return input.split('\n').map((line) => line.trim());
   }

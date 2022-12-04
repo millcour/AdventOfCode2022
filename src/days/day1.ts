@@ -1,6 +1,6 @@
 import { BaseDay } from '../day';
 
-export class Day extends BaseDay<number, number, number[]> {
+export class Day extends BaseDay<number[], number, number> {
   parse(input: string): number[] {
     const elves = input.split('\n\n');
     return elves.map((elf) =>

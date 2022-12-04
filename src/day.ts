@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-export abstract class BaseDay<Return1, Return2, Input> {
+export abstract class BaseDay<Input, Return1, Return2> {
   input: Input;
   constructor(input: string) {
     this.input = this.parse(input);

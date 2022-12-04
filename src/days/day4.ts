@@ -28,7 +28,7 @@ export class Range {
 
 type Input = [Range, Range][];
 
-export class Day extends BaseDay<number, number, Input> {
+export class Day extends BaseDay<Input, number, number> {
   parse(input: string): Input {
     return input.split('\n').map((line) => {
       const [r1, r2] = line.split(',').map(Range.parse);
