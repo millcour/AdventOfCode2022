@@ -11,5 +11,10 @@
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "jest.jestCommandLine": "jest src/"
+  "jest.jestCommandLine": "jest src/",
+  "jest.testExplorer": {
+    "enabled": true,
+    "showInlineError": true
+  },
+  "jest.showCoverageOnLoad": true
 }
