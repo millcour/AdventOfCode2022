@@ -4,7 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
   roots: ['<rootDir>/src'],
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: ['src/**'],
   coverageThreshold: {
     global: {
