@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { BaseDay } from '../day';
 
 export class Day extends BaseDay<number[], number, number> {
