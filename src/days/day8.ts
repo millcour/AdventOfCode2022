@@ -12,15 +12,6 @@ class Grid {
   }
 }
 
-/**
-
-30373
-25512
-65332
-33549
-35390
-
- */
 export class Day extends BaseDay<Grid, number, number> {
   parse(input: string): Grid {
     const treeGrid = new Grid(0, 0);
@@ -162,15 +153,6 @@ export class Day extends BaseDay<Grid, number, number> {
             break;
           }
         }
-        /**
-
-30373
-25512
-65332
-33549
-35390
-
- */
         visibleTrees.push(leftTrees * rightTrees * topTrees * bottomTrees);
       }
     }
