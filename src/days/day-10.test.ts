@@ -1,4 +1,4 @@
-import Day from './day9';
+import Day from './day-10';
 import { dayRunner } from './test-runner';
 
 const example = `addx 15

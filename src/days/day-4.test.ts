@@ -1,4 +1,4 @@
-import Day from './day4';
+import Day from './day-4';
 import { dayRunner } from './test-runner';
 
 const example = `2-4,6-8
