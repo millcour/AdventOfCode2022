@@ -1,6 +1,6 @@
 import { BaseDay } from '../day';
 
-type OperationCallback = (arg0: number) => number;
+type OperationCallback = (arg0: bigint) => bigint;
 
 type ThrowKey = {
   throwTrue: number;
@@ -8,39 +8,27 @@ type ThrowKey = {
 };
 
 class Monkey {
-  items: number[];
+  items: bigint[];
   inspectOperation: OperationCallback;
   testDivisibleValue: number;
   throwKey: ThrowKey;
   numberOfInspections: number;
 
-  TossToMonkey(monkeys: Monkey[], item: number) {
+  TossToMonkey(monkeys: Monkey[], item: bigint) {
     monkeys[this.WhoToThrowTo(item)].items.push(item);
   }
 
-  InspectItem(item: number): number {
+  InspectItem(item: bigint): bigint {
     const newValue = this.inspectOperation(item);
     return newValue;
   }
 
-  GetBored(item: number): number {
-    return Math.floor(item / 3);
-  }
+  //   GetBored(item: bigint): bigint {
+  //     return Math.floor(item / 3);
+  //   }
 
-  ManageWorry(item: number): number {
-    if (item % this.testDivisibleValue == 0) {
-      return item / this.testDivisibleValue;
-    } else {
-      let divide = this.testDivisibleValue;
-      while (item % divide != 0 && divide != 0) {
-        divide--;
-      }
-      return item % divide == 0 ? item / divide : item;
-    }
-  }
-
-  WhoToThrowTo(item: number): number {
-    if (item % this.testDivisibleValue == 0) {
+  WhoToThrowTo(item: bigint): number {
+    if (item % BigInt(this.testDivisibleValue) == BigInt(0)) {
       return this.throwKey.throwTrue;
     }
 
@@ -48,7 +36,7 @@ class Monkey {
   }
 
   constructor(
-    startItems: number[],
+    startItems: bigint[],
     test: number,
     op: OperationCallback,
     throwKey: ThrowKey
@@ -102,11 +90,11 @@ export class Day extends BaseDay<Monkey[], number, number> {
     return monkeys;
   }
 
-  parseItems(input: string): number[] {
+  parseItems(input: string): bigint[] {
     const itemListWords = input.split(' ');
     const itemList = itemListWords.slice(2, itemListWords.length);
     const itemListNumbers = itemList.map((i) =>
-      parseInt(i.replaceAll(',', ''))
+      BigInt(parseInt(i.replaceAll(',', '')))
     );
 
     return [...itemListNumbers];
@@ -118,30 +106,30 @@ export class Day extends BaseDay<Monkey[], number, number> {
     const value = toParse[1];
     switch (operation) {
       case '+':
-        return (item: number) => {
-          return item + this.getOperationValue(item, value);
+        return (item: bigint) => {
+          return item + BigInt(this.getOperationValue(item, value));
         };
       case '-':
-        return (item: number) => {
-          return item - this.getOperationValue(item, value);
+        return (item: bigint) => {
+          return item - BigInt(this.getOperationValue(item, value));
         };
       case '*':
-        return (item: number) => {
-          return item * this.getOperationValue(item, value);
+        return (item: bigint) => {
+          return item * BigInt(this.getOperationValue(item, value));
         };
       case '/':
-        return (item: number) => {
-          return item / this.getOperationValue(item, value);
+        return (item: bigint) => {
+          return item / BigInt(this.getOperationValue(item, value));
         };
     }
-    return (arg0: number) => arg0 + 1;
+    return (arg0: bigint) => BigInt(arg0) + BigInt(1);
   }
 
-  getOperationValue(item: number, value: string): number {
+  getOperationValue(item: bigint, value: string): bigint {
     if (value == 'old') {
       return item;
     } else {
-      return parseInt(value);
+      return BigInt(value);
     }
   }
 
@@ -163,10 +151,10 @@ export class Day extends BaseDay<Monkey[], number, number> {
         for (let i = 0; i < monkey.items.length; i++) {
           const item = monkey.items[i];
           // Monkey inspects item where item follows operation
-          let newItemValue = monkey.InspectItem(item);
+          const newItemValue = monkey.InspectItem(item);
           monkey.numberOfInspections++;
           // Monkey gets bored.  Divide by three
-          newItemValue = monkey.GetBored(newItemValue);
+          //   newItemValue = Math.floor(newItemValue);
           // Check against test value.  True, throw
           monkey.TossToMonkey(monkeys, newItemValue);
         }
@@ -181,19 +169,23 @@ export class Day extends BaseDay<Monkey[], number, number> {
   }
 
   async partTwo(): Promise<number> {
-    const numRounds = 20;
+    const numRounds = 10000;
     const monkeys = [...this.input];
     monkeys.map((m) => (m.numberOfInspections = 0));
+    const divisors = monkeys.map((m) => m.testDivisibleValue);
+    const unique = [...new Set(divisors)];
+    const commonMultiplier = unique.reduce((a, b) => {
+      return a * b;
+    }, 1);
+
     for (let round = 0; round < numRounds; round++) {
       for (const monkey of monkeys) {
         for (let i = 0; i < monkey.items.length; i++) {
           const item = monkey.items[i];
           // Monkey inspects item where item follows operation
           let newItemValue = monkey.InspectItem(item);
+          newItemValue %= BigInt(commonMultiplier);
           monkey.numberOfInspections++;
-          // Monkey gets bored.  Divide by three
-          // newItemValue = monkey.GetBored(newItemValue);
-          newItemValue = monkey.ManageWorry(newItemValue);
           // Check against test value.  True, throw
           monkey.TossToMonkey(monkeys, newItemValue);
         }
