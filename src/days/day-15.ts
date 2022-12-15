@@ -111,14 +111,6 @@ export class Day extends BaseDay<Signal[], number, number> {
     return xValues;
   }
 
-  removeDuplicates(positions: Position[]) {
-    const seen: Record<number, boolean> = {};
-    return positions.filter(function (item) {
-      const k = item.x;
-      return seen[k] == true ? false : (seen[k] = true);
-    });
-  }
-
   removeBeacons(
     signals: Signal[],
     xValues: Set<number>,
