@@ -1,6 +1,6 @@
 import { BaseDay } from '../day';
 
-type OperationCallback = (arg0: bigint) => bigint;
+type OperationCallback = (arg0: number) => number;
 
 type ThrowKey = {
   throwTrue: number;
@@ -8,27 +8,27 @@ type ThrowKey = {
 };
 
 class Monkey {
-  items: bigint[];
+  items: number[];
   inspectOperation: OperationCallback;
   testDivisibleValue: number;
   throwKey: ThrowKey;
   numberOfInspections: number;
 
-  TossToMonkey(monkeys: Monkey[], item: bigint) {
+  TossToMonkey(monkeys: Monkey[], item: number) {
     monkeys[this.WhoToThrowTo(item)].items.push(item);
   }
 
-  InspectItem(item: bigint): bigint {
+  InspectItem(item: number): number {
     const newValue = this.inspectOperation(item);
     return newValue;
   }
 
-  //   GetBored(item: bigint): bigint {
-  //     return Math.floor(item / 3);
-  //   }
+  GetBored(item: number): number {
+    return Math.floor(item / 3);
+  }
 
-  WhoToThrowTo(item: bigint): number {
-    if (item % BigInt(this.testDivisibleValue) == BigInt(0)) {
+  WhoToThrowTo(item: number): number {
+    if (item % this.testDivisibleValue == 0) {
       return this.throwKey.throwTrue;
     }
 
@@ -36,7 +36,7 @@ class Monkey {
   }
 
   constructor(
-    startItems: bigint[],
+    startItems: number[],
     test: number,
     op: OperationCallback,
     throwKey: ThrowKey
@@ -90,11 +90,21 @@ export class Day extends BaseDay<Monkey[], number, number> {
     return monkeys;
   }
 
-  parseItems(input: string): bigint[] {
+  getCopyMonkey(monkey: Monkey): Monkey {
+    const newMonkey = new Monkey(
+      [...monkey.items],
+      monkey.testDivisibleValue,
+      monkey.inspectOperation,
+      { ...monkey.throwKey }
+    );
+    return newMonkey;
+  }
+
+  parseItems(input: string): number[] {
     const itemListWords = input.split(' ');
     const itemList = itemListWords.slice(2, itemListWords.length);
     const itemListNumbers = itemList.map((i) =>
-      BigInt(parseInt(i.replaceAll(',', '')))
+      parseInt(i.replaceAll(',', ''))
     );
 
     return [...itemListNumbers];
@@ -106,30 +116,30 @@ export class Day extends BaseDay<Monkey[], number, number> {
     const value = toParse[1];
     switch (operation) {
       case '+':
-        return (item: bigint) => {
-          return item + BigInt(this.getOperationValue(item, value));
+        return (item: number) => {
+          return item + this.getOperationValue(item, value);
         };
       case '-':
-        return (item: bigint) => {
-          return item - BigInt(this.getOperationValue(item, value));
+        return (item: number) => {
+          return item - this.getOperationValue(item, value);
         };
       case '*':
-        return (item: bigint) => {
-          return item * BigInt(this.getOperationValue(item, value));
+        return (item: number) => {
+          return item * this.getOperationValue(item, value);
         };
       case '/':
-        return (item: bigint) => {
-          return item / BigInt(this.getOperationValue(item, value));
+        return (item: number) => {
+          return item / this.getOperationValue(item, value);
         };
     }
-    return (arg0: bigint) => BigInt(arg0) + BigInt(1);
+    return (arg0: number) => arg0 + 1;
   }
 
-  getOperationValue(item: bigint, value: string): bigint {
+  getOperationValue(item: number, value: string): number {
     if (value == 'old') {
       return item;
     } else {
-      return BigInt(value);
+      return parseInt(value);
     }
   }
 
@@ -145,16 +155,19 @@ export class Day extends BaseDay<Monkey[], number, number> {
 
   async partOne(): Promise<number> {
     const numRounds = 20;
-    const monkeys = [...this.input];
+    const monkeys: Monkey[] = [];
+    for (const monkey of this.input) {
+      monkeys.push(this.getCopyMonkey(monkey));
+    }
     for (let round = 0; round < numRounds; round++) {
       for (const monkey of monkeys) {
         for (let i = 0; i < monkey.items.length; i++) {
           const item = monkey.items[i];
           // Monkey inspects item where item follows operation
-          const newItemValue = monkey.InspectItem(item);
+          let newItemValue = monkey.InspectItem(item);
           monkey.numberOfInspections++;
           // Monkey gets bored.  Divide by three
-          //   newItemValue = Math.floor(newItemValue);
+          newItemValue = monkey.GetBored(newItemValue);
           // Check against test value.  True, throw
           monkey.TossToMonkey(monkeys, newItemValue);
         }
@@ -184,7 +197,7 @@ export class Day extends BaseDay<Monkey[], number, number> {
           const item = monkey.items[i];
           // Monkey inspects item where item follows operation
           let newItemValue = monkey.InspectItem(item);
-          newItemValue %= BigInt(commonMultiplier);
+          newItemValue %= commonMultiplier;
           monkey.numberOfInspections++;
           // Check against test value.  True, throw
           monkey.TossToMonkey(monkeys, newItemValue);
